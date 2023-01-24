@@ -5,20 +5,22 @@ class Usuario {
 }
 
 class Alerta {
-    - boolean leida
+    - leida: boolean
+    - tipo: TipoDeAlerta
+
+    + leido()
+    + marcar_como_leido()
 }
 
-class Informativa {
-
-}
-
-class Urgente {
-
+enum TipoDeAlerta {
+    URGENTE, INFORMATIVA
 }
 
 ' puede ser un enum tambien
 class Tema {
 
 }
+
+Alerta --> TipoDeAlerta
 
 @enduml

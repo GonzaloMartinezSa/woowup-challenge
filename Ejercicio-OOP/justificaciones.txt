@@ -1,0 +1,15 @@
+Sobre Alertas:
+
+    Pensé en herencia, pero simplemente no pega muy bien acá. Las Urgentes e Informativas no tienen comportamiento
+    particular, así que todo quedaría en la superclase. Además, dificultaría el ordenamiento por prioridad que se
+    pide después.
+    Pensé en un strategy, y este pintaba mejor. Así, lo del ordenamiento después y, en general, poder distinguir
+    entre tipos de alertas, tiene más sentido. Lo malo es que lo de cambiar de estrategia (acá tipos de alerta)
+    verdaderamente no hace falta. No se menciona que exista la intención de que una alerta Urgente pueda pasar
+    a ser Informativa ni vicseversa. Al mismo tiempo, es como antes en el sentido que los tipos de alerta no
+    parecen tener un comportamiento particular.
+    Por eso al final me decidí por un enum. Una Alerta tiene un ´tipo´ y listo. Lo malo de esto es que si quiero
+    agregar comportamiento, se puede pero no es ideal así, y que si después quiero agregar un tipo de alerta nueva
+    tengo que venir al código, sumarlo al enum y correr otra vez lo que estaba corriendo. Si mínimo fuese una
+    clase, sería más dinámico en el sentido de no tener que parar todo y no tener que ver el código, pero me
+    parece que eso escapa lo que me piden, así que lo hice de la manera más simple posible.
