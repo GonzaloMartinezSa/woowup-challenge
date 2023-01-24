@@ -1,0 +1,24 @@
+@startuml diagrama_de_clases
+
+class Usuario {
+
+}
+
+class Alerta {
+    - boolean leida
+}
+
+class Informativa {
+
+}
+
+class Urgente {
+
+}
+
+' puede ser un enum tambien
+class Tema {
+
+}
+
+@enduml
