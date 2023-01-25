@@ -8,15 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
+  private String nombre;
   private List<Tema> temas_de_interes = new ArrayList<>();
   private List<AlertaUsuario> alertas_recibidas = new ArrayList<>();
 
-  public Usuario() {
-
-  }
-
-  public Usuario(List<Tema> temas_de_interes) {
-    this.temas_de_interes = temas_de_interes;
+  public Usuario(String nombre) {
+    this.nombre = nombre;
   }
 
   public void anadir_tema_de_interes(Tema tema) {
