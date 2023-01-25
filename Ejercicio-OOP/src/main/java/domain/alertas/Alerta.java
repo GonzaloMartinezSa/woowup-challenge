@@ -9,30 +9,23 @@ import java.time.LocalDateTime;
 public class Alerta {
 
   private String descripcion;
-  private boolean leido = false;
   private TipoDeAlerta tipo;
+  private Tema tema;
   private LocalDateTime fecha_y_hora_de_expiacion;
 
-  public Alerta(String descripcion, TipoDeAlerta tipoDeAlerta) {
+  public Alerta(String descripcion, TipoDeAlerta tipoDeAlerta, Tema tema) {
     this.descripcion = descripcion;
     this.tipo = tipoDeAlerta;
+    this.tema = tema;
   }
 
-  public boolean leido() {
-    return this.leido;
-  }
-
-  public void marcar_como_leida() {
-    this.leido = true;
-  }
-
-  public void enviar(Tema tema) {
+  public void enviar() {
     RepoUsuarios.instance()
-        .interesados_en(tema)
+        .interesados_en(this.tema)
         .forEach(usuario -> usuario.recibir_alerta(this));
   }
 
-  public void enviar(Tema tema, Usuario usuario) {
+  public void enviar(Usuario usuario) {
     usuario.recibir_alerta(this);
   }
 

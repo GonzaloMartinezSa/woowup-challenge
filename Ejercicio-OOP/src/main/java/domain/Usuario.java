@@ -2,13 +2,14 @@ package domain;
 
 import domain.Tema;
 import domain.alertas.Alerta;
+import domain.alertas.AlertaUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
   private List<Tema> temas_de_interes = new ArrayList<>();
-  private List<Alerta> alertas_recibidas = new ArrayList<>();
+  private List<AlertaUsuario> alertas_recibidas = new ArrayList<>();
 
   public Usuario() {
 
@@ -27,7 +28,8 @@ public class Usuario {
   }
 
   public void recibir_alerta(Alerta alerta) {
-    this.alertas_recibidas.add(alerta);
+    AlertaUsuario alertaUsuario = new AlertaUsuario(alerta);
+    this.alertas_recibidas.add(alertaUsuario);
   }
 
 }

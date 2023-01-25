@@ -13,3 +13,10 @@ Sobre Alertas:
     tengo que venir al código, sumarlo al enum y correr otra vez lo que estaba corriendo. Si mínimo fuese una
     clase, sería más dinámico en el sentido de no tener que parar todo y no tener que ver el código, pero me
     parece que eso escapa lo que me piden, así que lo hice de la manera más simple posible.
+
+Sobre enviar alertas:
+
+    Si bien una alerta realísticamente podría ser sobre varios temas, acá siempre menciona que una alerta siempre
+    se envía sobre un solo tema, así que no me complico.
+    Sobre esto 'Se puede enviar una alerta sobre un tema a un usuario específico, solo lo recibe ese único usuario.'
+    supongo que si el usuario no está interesado en el tema recibe la alerta igual.
