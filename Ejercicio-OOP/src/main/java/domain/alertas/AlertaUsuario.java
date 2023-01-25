@@ -1,7 +1,9 @@
 package domain.alertas;
 
+import lombok.Getter;
+
 public class AlertaUsuario {
-  private Alerta alerta;
+  @Getter private Alerta alerta;
   private boolean leida = false;
 
   public AlertaUsuario(Alerta alerta) {

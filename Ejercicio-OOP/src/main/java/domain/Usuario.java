@@ -14,6 +14,7 @@ public class Usuario {
 
   public Usuario(String nombre) {
     this.nombre = nombre;
+    RepoUsuarios.instance().add(this);
   }
 
   public void anadir_tema_de_interes(Tema tema) {
@@ -27,6 +28,16 @@ public class Usuario {
   public void recibir_alerta(Alerta alerta) {
     AlertaUsuario alertaUsuario = new AlertaUsuario(alerta);
     this.alertas_recibidas.add(alertaUsuario);
+  }
+
+  public boolean tiene_alerta(Alerta alerta) {
+    return this.alertas_recibidas
+        .stream()
+        .anyMatch(alertaUsuario ->
+            alertaUsuario
+                .getAlerta()
+                .equals(alerta)
+        );
   }
 
 }
