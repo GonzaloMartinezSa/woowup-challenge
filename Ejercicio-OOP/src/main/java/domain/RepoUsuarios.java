@@ -20,6 +20,10 @@ public class RepoUsuarios {
     this.usuarios.remove(usuario);
   }
 
+  public void clear() {
+    this.usuarios = new ArrayList<>();
+  }
+
   public List<Usuario> all() {
     return this.usuarios;
   }

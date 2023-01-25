@@ -15,4 +15,8 @@ public class AlertaUsuario {
   public void marcar_como_leida() {
     this.leida = true;
   }
+
+  public boolean expirada() {
+    return alerta.expirada();
+  }
 }
