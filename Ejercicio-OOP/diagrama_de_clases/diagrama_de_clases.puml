@@ -1,0 +1,95 @@
+@startuml diagrama_de_clases
+
+' Esto se saltea setters y getters simples
+
+class RepoUsuario {
+    - usuarios
+    + add()
+    + delete()
+    + all()
+    + clear()
+    + interesadosEn(tema): List<Usuario>
+}
+
+class Usuario {
+    - nombre: String
+    - temasDeInteres: List<Tema>
+    - alertasRecibidas: List<AlertaUsuario>
+
+    - find(alerta): AlertaUsuario
+    + anadirInteres(tema)
+    + interesadoEn(tema): Boolean
+    + recibirAlerta(alerta)
+    + tieneAlerta(alerta): Boolean
+    + eliminarAlertasExpiradas()
+    + marcarComoLeida(alerta)
+    + leida(alerta): Boolean
+    + obtenerAlertas(): List<Alerta>
+}
+
+class AlertaUsuario {
+    - alerta: Alerta
+    - leida: Boolean
+
+    + leida(): Boolean
+    + marcarComoLeida()
+    + expirada(): Boolean
+}
+
+class RepoAlertas {
+    - alertas
+    + add()
+    + delete()
+    + all()
+    + clear()
+    + obtenerAlertas(tema): List<Alerta>
+}
+
+class Alerta {
+    - descripcion: String
+    - leida: boolean
+    - tipo: TipoDeAlerta
+    - tipoReceptor: TipoDeReceptor
+    - tema: Tema
+    - fechaCreacion: LocalDateTime
+    - fechaExpiracion: Optional<LocalDateTime>
+
+    + esDeTipo(tipoDeAlerta): Boolean
+    + esSobreTema(tema): Boolean
+    + setExpiracion(localDateTime)
+    + enviar()
+    + enviar(usuario)
+    + expirada(): Boolean
+}
+
+enum TipoDeAlerta {
+    URGENTE, INFORMATIVA
+}
+
+enum TipoDeReceptor {
+    USUARIO, TODOS, NADIE
+}
+
+' puede ser un enum tambien
+class Tema {
+    - nombre: String
+
+    + obtenerAlertas(): List<Alerta>
+}
+
+class Comparador {
+    + static getComparadorDeAlertas(): Comparator<Alerta>
+}
+
+RepoUsuario --> "*" Usuario
+Usuario -> "*" Tema
+Usuario --> "*" AlertaUsuario
+AlertaUsuario --> Alerta
+RepoAlertas --> "*" Alerta
+Alerta --> TipoDeAlerta
+Alerta --> TipoDeReceptor
+Alerta --> Tema
+Usuario ..> Comparador
+RepoAlertas ..> Comparador
+
+@enduml

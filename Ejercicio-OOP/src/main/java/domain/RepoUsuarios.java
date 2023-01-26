@@ -28,10 +28,10 @@ public class RepoUsuarios {
     return this.usuarios;
   }
 
-  public List<Usuario> interesados_en(Tema tema) {
+  public List<Usuario> interesadosEn(Tema tema) {
     return this.usuarios
         .stream()
-        .filter(usuario -> usuario.interesado_en(tema))
+        .filter(usuario -> usuario.interesadoEn(tema))
         .collect(Collectors.toList());
   }
 

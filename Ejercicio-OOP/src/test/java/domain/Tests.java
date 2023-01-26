@@ -26,14 +26,14 @@ public class Tests {
   @Test
   public void UnUsuarioPuedeEstarInteresadoEnUnTema() {
     Tema politica = new Tema("politica");
-    usuario.anadir_tema_de_interes(politica);
-    assertTrue(usuario.interesado_en(politica));
+    usuario.anadirInteres(politica);
+    assertTrue(usuario.interesadoEn(politica));
   }
 
   @Test
   public void UnUsuarioNoEstaInteresadoEnUnTemaQueNoEligio() {
     Tema politica = new Tema("politica");
-    assertFalse(usuario.interesado_en(politica));
+    assertFalse(usuario.interesadoEn(politica));
   }
 
   @Test
@@ -41,12 +41,12 @@ public class Tests {
     Tema politica = new Tema("politica");
     Tema deportes = new Tema("deportes");
     Tema juegos = new Tema("juegos");
-    usuario.anadir_tema_de_interes(politica);
-    usuario.anadir_tema_de_interes(deportes);
+    usuario.anadirInteres(politica);
+    usuario.anadirInteres(deportes);
 
-    assertTrue(usuario.interesado_en(politica));
-    assertTrue(usuario.interesado_en(deportes));
-    assertFalse(usuario.interesado_en(juegos));
+    assertTrue(usuario.interesadoEn(politica));
+    assertTrue(usuario.interesadoEn(deportes));
+    assertFalse(usuario.interesadoEn(juegos));
   }
 
   // 4.	Se puede enviar una alerta sobre un tema y lo reciben todos los usuarios
@@ -57,10 +57,10 @@ public class Tests {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
 
-    usuario.anadir_tema_de_interes(politica);
+    usuario.anadirInteres(politica);
     alerta.enviar();
 
-    assertTrue(usuario.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -72,12 +72,12 @@ public class Tests {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
 
-    usuario.anadir_tema_de_interes(politica);
-    usuario2.anadir_tema_de_interes(politica);
+    usuario.anadirInteres(politica);
+    usuario2.anadirInteres(politica);
     alerta.enviar();
 
-    assertTrue(usuario.tiene_alerta(alerta));
-    assertTrue(usuario2.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta));
+    assertTrue(usuario2.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -90,13 +90,13 @@ public class Tests {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
 
-    usuario.anadir_tema_de_interes(politica);
-    usuario2.anadir_tema_de_interes(politica);
+    usuario.anadirInteres(politica);
+    usuario2.anadirInteres(politica);
     alerta.enviar();
 
-    assertTrue(usuario.tiene_alerta(alerta));
-    assertTrue(usuario2.tiene_alerta(alerta));
-    assertFalse(usuario3.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta));
+    assertTrue(usuario2.tieneAlerta(alerta));
+    assertFalse(usuario3.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -109,10 +109,10 @@ public class Tests {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
 
-    usuario.anadir_tema_de_interes(politica);
+    usuario.anadirInteres(politica);
     alerta.enviar(usuario);
 
-    assertTrue(usuario.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -125,7 +125,7 @@ public class Tests {
 
     alerta.enviar(usuario);
 
-    assertTrue(usuario.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -138,7 +138,7 @@ public class Tests {
   public void SePuedeCrearUnaAlertaConFechaDeExpiracion() {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
-    alerta.set_expiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
+    alerta.setExpiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
 
     assertFalse(alerta.expirada());
   }
@@ -147,7 +147,7 @@ public class Tests {
   public void UnaAlertaConFechaDeExpiracionPuedeHaberExpirado() {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
-    alerta.set_expiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
+    alerta.setExpiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
 
     assertTrue(alerta.expirada());
   }
@@ -157,18 +157,18 @@ public class Tests {
     Tema politica = new Tema("politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
     Alerta alerta2 = new Alerta("Nuevo presidente", TipoDeAlerta.INFORMATIVA, politica);
-    alerta.set_expiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
-    alerta2.set_expiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
+    alerta.setExpiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
+    alerta2.setExpiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
 
     //usuario.anadir_tema_de_interes(politica);
 
     alerta.enviar(usuario);
     alerta2.enviar(usuario);
 
-    usuario.eliminar_alertas_expiradas();
+    usuario.eliminarAlertasExpiradas();
 
-    assertTrue(usuario.tiene_alerta(alerta2));
-    assertFalse(usuario.tiene_alerta(alerta));
+    assertTrue(usuario.tieneAlerta(alerta2));
+    assertFalse(usuario.tieneAlerta(alerta));
 
     RepoUsuarios.instance().clear();
     RepoAlertas.instance().clear();
@@ -182,7 +182,7 @@ public class Tests {
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
 
     alerta.enviar(usuario);
-    usuario.marcar_como_leida(alerta);
+    usuario.marcarComoLeida(alerta);
 
     assertTrue(usuario.leida(alerta));
 
@@ -212,14 +212,14 @@ public class Tests {
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
     Alerta alerta2 = new Alerta("A votar mas", TipoDeAlerta.INFORMATIVA, politica);
     Alerta alerta3 = new Alerta("A votar mas todavia", TipoDeAlerta.URGENTE, politica);
-    alerta.setFecha_creacion(LocalDateTime.of(2022, 2, 21, 12, 30));
-    alerta2.setFecha_creacion(LocalDateTime.of(2020, 2, 21, 12, 30));
+    alerta.setFechaCreacion(LocalDateTime.of(2022, 2, 21, 12, 30));
+    alerta2.setFechaCreacion(LocalDateTime.of(2020, 2, 21, 12, 30));
 
     alerta.enviar(usuario);
     alerta2.enviar(usuario);
     alerta3.enviar(usuario);
 
-    List<Alerta> alertas = usuario.obtener_alertas();
+    List<Alerta> alertas = usuario.obtenerAlertas();
 
     //alertas.forEach(a -> System.out.println( a.getTipo() + " - " + a.getDescripcion()));
 
@@ -243,15 +243,15 @@ public class Tests {
     Alerta alerta2 = new Alerta("A votar mas", TipoDeAlerta.INFORMATIVA, politica);
     Alerta alerta3 = new Alerta("A votar mas todavia", TipoDeAlerta.URGENTE, politica);
     Alerta alerta4 = new Alerta("Salio Dead Space Remake", TipoDeAlerta.URGENTE, juegos);
-    alerta.setFecha_creacion(LocalDateTime.of(2022, 2, 21, 12, 30));
-    alerta2.setFecha_creacion(LocalDateTime.of(2020, 2, 21, 12, 30));
+    alerta.setFechaCreacion(LocalDateTime.of(2022, 2, 21, 12, 30));
+    alerta2.setFechaCreacion(LocalDateTime.of(2020, 2, 21, 12, 30));
 
     alerta.enviar(usuario);
     alerta2.enviar(usuario);
     alerta3.enviar(usuario);
     alerta4.enviar(usuario);
 
-    List<Alerta> alertas = politica.obtener_alertas();
+    List<Alerta> alertas = politica.obtenerAlertas();
 
     //alertas.forEach(a -> System.out.println( a.getTipo() + " - " + a.getDescripcion()));
 
@@ -267,7 +267,7 @@ public class Tests {
   public void SePuedeSaberSiUnaAlertaSeMandoATodos() {
     Tema politica = new Tema("Politica");
     Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
-    usuario.anadir_tema_de_interes(politica);
+    usuario.anadirInteres(politica);
     alerta.enviar();
 
     assertEquals(TipoDeReceptor.TODOS, alerta.getTipoReceptor());

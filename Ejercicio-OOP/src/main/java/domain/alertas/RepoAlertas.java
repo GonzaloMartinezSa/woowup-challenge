@@ -32,11 +32,11 @@ public class RepoAlertas {
     return this.alertas;
   }
 
-  public List<Alerta> obtener_alertas(Tema tema) {
+  public List<Alerta> obtenerAlertas(Tema tema) {
     return this.alertas
         .stream()
         .filter(alerta -> !alerta.expirada() && alerta.esSobreTema(tema))
-        .sorted(Comparador.getComparator())
+        .sorted(Comparador.getComparadorDeAlertas())
         .collect(Collectors.toList());
   }
 

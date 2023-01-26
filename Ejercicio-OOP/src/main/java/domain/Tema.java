@@ -12,8 +12,8 @@ public class Tema {
     this.nombre = nombre;
   }
 
-  public List<Alerta> obtener_alertas() {
-    return RepoAlertas.instance().obtener_alertas(this);
+  public List<Alerta> obtenerAlertas() {
+    return RepoAlertas.instance().obtenerAlertas(this);
   }
 
 }

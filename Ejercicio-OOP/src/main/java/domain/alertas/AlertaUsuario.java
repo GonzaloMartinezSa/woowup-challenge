@@ -14,7 +14,7 @@ public class AlertaUsuario {
     return this.leida;
   }
 
-  public void marcar_como_leida() {
+  public void marcarComoLeida() {
     this.leida = true;
   }
 
