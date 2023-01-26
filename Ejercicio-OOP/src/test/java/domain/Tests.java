@@ -7,6 +7,8 @@ import domain.alertas.TipoDeAlerta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 public class Tests {
 
   Usuario usuario;
@@ -56,6 +58,7 @@ public class Tests {
     alerta.enviar();
 
     assertTrue(usuario.tiene_alerta(alerta));
+
     RepoUsuarios.instance().clear();
   }
 
@@ -71,6 +74,7 @@ public class Tests {
 
     assertTrue(usuario.tiene_alerta(alerta));
     assertTrue(usuario2.tiene_alerta(alerta));
+
     RepoUsuarios.instance().clear();
   }
 
@@ -88,6 +92,103 @@ public class Tests {
     assertTrue(usuario.tiene_alerta(alerta));
     assertTrue(usuario2.tiene_alerta(alerta));
     assertFalse(usuario3.tiene_alerta(alerta));
+
+    RepoUsuarios.instance().clear();
+  }
+
+  // 5.	Se puede enviar una alerta sobre un tema a un usuario específico, solo lo recibe ese único usuario.
+
+  @Test
+  public void SePuedeEnviarUnaAlertaAUnUsuarioDirectamente() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+
+    usuario.anadir_tema_de_interes(politica);
+    alerta.enviar(usuario);
+
+    assertTrue(usuario.tiene_alerta(alerta));
+
+    RepoUsuarios.instance().clear();
+  }
+
+  @Test
+  public void SePuedeEnviarUnaAlertaAUnUsuarioDirectamenteAunqueNoEsteInteresado() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+
+    alerta.enviar(usuario);
+
+    assertTrue(usuario.tiene_alerta(alerta));
+
+    RepoUsuarios.instance().clear();
+  }
+
+  // 6.	Una alerta puede tener una fecha y hora de expiración. Las alertas que tienen expiración,
+  // no se muestran al usuario si han expirado.
+
+  @Test
+  public void SePuedeCrearUnaAlertaConFechaDeExpiracion() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    alerta.set_expiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
+
+    assertFalse(alerta.expirada());
+  }
+
+  @Test
+  public void UnaAlertaConFechaDeExpiracionPuedeHaberExpirado() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    alerta.set_expiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
+
+    assertTrue(alerta.expirada());
+  }
+
+  @Test
+  public void PuedoEliminarAlertasExpiradas() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    Alerta alerta2 = new Alerta("Nuevo presidente", TipoDeAlerta.INFORMATIVA, politica);
+    alerta.set_expiracion(LocalDateTime.of(2020, 5, 3, 12, 30));
+    alerta2.set_expiracion(LocalDateTime.of(2024, 5, 3, 12, 30));
+
+    //usuario.anadir_tema_de_interes(politica);
+
+    alerta.enviar(usuario);
+    alerta2.enviar(usuario);
+
+    usuario.eliminar_alertas_expiradas();
+
+    assertTrue(usuario.tiene_alerta(alerta2));
+    assertFalse(usuario.tiene_alerta(alerta));
+
+    RepoUsuarios.instance().clear();
+  }
+
+  // 8.	Un usuario puede marcar una alerta como leída.
+
+  @Test
+  public void UnUsuarioPuedeMarcarUnaAlertaComoLeida() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+
+    alerta.enviar(usuario);
+    usuario.marcar_como_leida(alerta);
+
+    assertTrue(usuario.leida(alerta));
+
+    RepoUsuarios.instance().clear();
+  }
+
+  @Test
+  public void UnaAlertaEmpiezaComoNoLeida() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+
+    alerta.enviar(usuario);
+
+    assertFalse(usuario.leida(alerta));
+
     RepoUsuarios.instance().clear();
   }
 

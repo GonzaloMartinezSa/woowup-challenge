@@ -1,11 +1,11 @@
 package domain;
 
-import domain.Tema;
 import domain.alertas.Alerta;
 import domain.alertas.AlertaUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Usuario {
   private String nombre;
@@ -38,6 +38,32 @@ public class Usuario {
                 .getAlerta()
                 .equals(alerta)
         );
+  }
+
+  public void eliminar_alertas_expiradas() {
+    List<AlertaUsuario> aux = this.alertas_recibidas
+        .stream()
+        .filter(alertaUsuario -> alertaUsuario.getAlerta().expirada())
+        .collect(Collectors.toList());
+
+    this.alertas_recibidas.removeAll(aux);
+  }
+
+  private AlertaUsuario find(Alerta alerta) {
+    return this.alertas_recibidas
+        .stream()
+        .filter(alertaUsuario -> alertaUsuario.getAlerta().equals(alerta))
+        .collect(Collectors.toList())
+        .get(0);
+  }
+
+  public void marcar_como_leida(Alerta alerta) {
+    if (tiene_alerta(alerta))
+      find(alerta).marcar_como_leida();
+  }
+
+  public boolean leida(Alerta alerta) {
+    return find(alerta).leida();
   }
 
 }

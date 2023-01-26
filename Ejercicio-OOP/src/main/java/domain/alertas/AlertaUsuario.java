@@ -10,7 +10,7 @@ public class AlertaUsuario {
     this.alerta = alerta;
   }
 
-  public boolean leidoa() {
+  public boolean leida() {
     return this.leida;
   }
 
