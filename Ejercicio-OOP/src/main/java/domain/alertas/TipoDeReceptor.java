@@ -1,5 +1,5 @@
 package domain.alertas;
 
 public enum TipoDeReceptor {
-  USUARIO, TODOS
+  USUARIO, TODOS, NADIE
 }

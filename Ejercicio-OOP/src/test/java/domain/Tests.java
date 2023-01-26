@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import domain.alertas.Alerta;
 import domain.alertas.RepoAlertas;
 import domain.alertas.TipoDeAlerta;
+import domain.alertas.TipoDeReceptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -230,6 +231,72 @@ public class Tests {
     RepoAlertas.instance().clear();
   }
 
+  // 10.	Se pueden obtener todas las alertas no expiradas para un tema (primero las Urgentes y luego
+  // las Informativas de la más reciente a la más antigua).
+  // Se informa para cada alerta si es para todos los usuarios o para uno específico.
 
+  @Test
+  public void SePuedenObtenerAlertasPorTema() {
+    Tema politica = new Tema("politica");
+    Tema juegos   = new Tema("juegos");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    Alerta alerta2 = new Alerta("A votar mas", TipoDeAlerta.INFORMATIVA, politica);
+    Alerta alerta3 = new Alerta("A votar mas todavia", TipoDeAlerta.URGENTE, politica);
+    Alerta alerta4 = new Alerta("Salio Dead Space Remake", TipoDeAlerta.URGENTE, juegos);
+    alerta.setFecha_creacion(LocalDateTime.of(2022, 2, 21, 12, 30));
+    alerta2.setFecha_creacion(LocalDateTime.of(2020, 2, 21, 12, 30));
+
+    alerta.enviar(usuario);
+    alerta2.enviar(usuario);
+    alerta3.enviar(usuario);
+    alerta4.enviar(usuario);
+
+    List<Alerta> alertas = politica.obtener_alertas();
+
+    //alertas.forEach(a -> System.out.println( a.getTipo() + " - " + a.getDescripcion()));
+
+    assertEquals(alerta3, alertas.get(0));
+    assertEquals(alerta, alertas.get(1));
+    assertEquals(alerta2, alertas.get(2));
+
+    RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
+  }
+
+  @Test
+  public void SePuedeSaberSiUnaAlertaSeMandoATodos() {
+    Tema politica = new Tema("Politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    usuario.anadir_tema_de_interes(politica);
+    alerta.enviar();
+
+    assertEquals(TipoDeReceptor.TODOS, alerta.getTipoReceptor());
+
+    RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
+  }
+
+  @Test
+  public void SePuedeSaberSiUnaAlertaSeMandoAAlguienParticular() {
+    Tema politica = new Tema("Politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    alerta.enviar(usuario);
+
+    assertEquals(TipoDeReceptor.USUARIO, alerta.getTipoReceptor());
+
+    RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
+  }
+
+  @Test
+  public void SePuedeSaberSiUnaAlertaNoSeMandoYNoSeRompe() {
+    Tema politica = new Tema("Politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+
+    assertEquals(TipoDeReceptor.NADIE, alerta.getTipoReceptor());
+
+    RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
+  }
 
 }

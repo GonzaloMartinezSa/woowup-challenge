@@ -13,7 +13,7 @@ public class Alerta {
 
   @Getter private String descripcion;
   @Getter private TipoDeAlerta tipo;
-  private TipoDeReceptor tipo_receptor;
+  @Getter private TipoDeReceptor tipoReceptor = TipoDeReceptor.NADIE;
   private Tema tema;
   @Getter @Setter private LocalDateTime fecha_creacion;
   private Optional<LocalDateTime> fecha_expiracion = Optional.empty();
@@ -38,7 +38,7 @@ public class Alerta {
   }
 
   public void enviar() {
-    this.tipo_receptor = TipoDeReceptor.TODOS;
+    this.tipoReceptor = TipoDeReceptor.TODOS;
     RepoAlertas.instance().add(this);
     RepoUsuarios.instance()
         .interesados_en(this.tema)
@@ -46,7 +46,7 @@ public class Alerta {
   }
 
   public void enviar(Usuario usuario) {
-    this.tipo_receptor = TipoDeReceptor.USUARIO;
+    this.tipoReceptor = TipoDeReceptor.USUARIO;
     RepoAlertas.instance().add(this);
     usuario.recibir_alerta(this);
   }
