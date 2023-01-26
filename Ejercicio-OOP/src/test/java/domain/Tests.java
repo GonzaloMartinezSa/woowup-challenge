@@ -3,6 +3,7 @@ package domain;
 import static org.junit.jupiter.api.Assertions.*;
 
 import domain.alertas.Alerta;
+import domain.alertas.RepoAlertas;
 import domain.alertas.TipoDeAlerta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,7 @@ public class Tests {
     assertTrue(usuario.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   @Test
@@ -77,6 +79,7 @@ public class Tests {
     assertTrue(usuario2.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   @Test
@@ -95,6 +98,7 @@ public class Tests {
     assertFalse(usuario3.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   // 5.	Se puede enviar una alerta sobre un tema a un usuario específico, solo lo recibe ese único usuario.
@@ -110,6 +114,7 @@ public class Tests {
     assertTrue(usuario.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   @Test
@@ -122,6 +127,7 @@ public class Tests {
     assertTrue(usuario.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   // 6.	Una alerta puede tener una fecha y hora de expiración. Las alertas que tienen expiración,
@@ -164,6 +170,7 @@ public class Tests {
     assertFalse(usuario.tiene_alerta(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   // 8.	Un usuario puede marcar una alerta como leída.
@@ -179,6 +186,7 @@ public class Tests {
     assertTrue(usuario.leida(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   @Test
@@ -191,6 +199,7 @@ public class Tests {
     assertFalse(usuario.leida(alerta));
 
     RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
 
   // 9.	Se pueden obtener todas las alertas no expiradas de un usuario que aún no ha leído, ordenadas
@@ -217,6 +226,10 @@ public class Tests {
     assertEquals(alerta, alertas.get(1));
     assertEquals(alerta2, alertas.get(2));
 
+    RepoUsuarios.instance().clear();
+    RepoAlertas.instance().clear();
   }
+
+
 
 }

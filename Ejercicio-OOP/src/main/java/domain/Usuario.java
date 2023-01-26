@@ -70,16 +70,8 @@ public class Usuario {
         .stream()
         .filter(alertaUsuario -> !alertaUsuario.expirada() && !alertaUsuario.leida())
         .map(AlertaUsuario::getAlerta)
-        .sorted((o1, o2) -> {
-          if (o1.tipo_is(TipoDeAlerta.URGENTE) && o2.tipo_is(TipoDeAlerta.INFORMATIVA))
-            return -1;
-          else if (o1.tipo_is(TipoDeAlerta.INFORMATIVA) && o2.tipo_is(TipoDeAlerta.URGENTE))
-            return 1;
-          else if (o1.tipo_is(TipoDeAlerta.INFORMATIVA) && o2.tipo_is(TipoDeAlerta.INFORMATIVA)) {
-            return o1.getFecha_creacion().compareTo(o2.getFecha_creacion()) * -1;
-          } else
-            return 0;
-        }).collect(Collectors.toList());
+        .sorted(Comparador.getComparator())
+        .collect(Collectors.toList());
   }
 
 }

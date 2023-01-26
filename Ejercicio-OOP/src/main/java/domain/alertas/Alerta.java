@@ -13,6 +13,7 @@ public class Alerta {
 
   @Getter private String descripcion;
   @Getter private TipoDeAlerta tipo;
+  private TipoDeReceptor tipo_receptor;
   private Tema tema;
   @Getter @Setter private LocalDateTime fecha_creacion;
   private Optional<LocalDateTime> fecha_expiracion = Optional.empty();
@@ -24,8 +25,12 @@ public class Alerta {
     this.fecha_creacion = LocalDateTime.now();
   }
 
-  public boolean tipo_is(TipoDeAlerta tipo) {
+  public boolean esDeTipo(TipoDeAlerta tipo) {
     return this.tipo.equals(tipo);
+  }
+
+  public boolean esSobreTema(Tema tema) {
+    return this.tema.equals(tema);
   }
 
   public void set_expiracion(LocalDateTime expiracion) {
@@ -33,12 +38,16 @@ public class Alerta {
   }
 
   public void enviar() {
+    this.tipo_receptor = TipoDeReceptor.TODOS;
+    RepoAlertas.instance().add(this);
     RepoUsuarios.instance()
         .interesados_en(this.tema)
         .forEach(usuario -> usuario.recibir_alerta(this));
   }
 
   public void enviar(Usuario usuario) {
+    this.tipo_receptor = TipoDeReceptor.USUARIO;
+    RepoAlertas.instance().add(this);
     usuario.recibir_alerta(this);
   }
 
