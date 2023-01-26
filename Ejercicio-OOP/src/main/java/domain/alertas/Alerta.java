@@ -11,11 +11,11 @@ import java.util.Optional;
 
 public class Alerta {
 
-  private String descripcion;
-  private TipoDeAlerta tipo;
+  @Getter private String descripcion;
+  @Getter private TipoDeAlerta tipo;
   private Tema tema;
   @Getter @Setter private LocalDateTime fecha_creacion;
-  private Optional<LocalDateTime> expiracion = Optional.empty();
+  private Optional<LocalDateTime> fecha_expiracion = Optional.empty();
 
   public Alerta(String descripcion, TipoDeAlerta tipoDeAlerta, Tema tema) {
     this.descripcion = descripcion;
@@ -24,8 +24,12 @@ public class Alerta {
     this.fecha_creacion = LocalDateTime.now();
   }
 
+  public boolean tipo_is(TipoDeAlerta tipo) {
+    return this.tipo.equals(tipo);
+  }
+
   public void set_expiracion(LocalDateTime expiracion) {
-    this.expiracion = Optional.of(expiracion);
+    this.fecha_expiracion = Optional.of(expiracion);
   }
 
   public void enviar() {
@@ -39,6 +43,6 @@ public class Alerta {
   }
 
   public boolean expirada() {
-    return LocalDateTime.now().isAfter(this.expiracion.orElse(LocalDateTime.now()));
+    return LocalDateTime.now().isAfter(this.fecha_expiracion.orElse(LocalDateTime.now()));
   }
 }

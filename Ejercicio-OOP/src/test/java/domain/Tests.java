@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Tests {
 
@@ -190,6 +191,32 @@ public class Tests {
     assertFalse(usuario.leida(alerta));
 
     RepoUsuarios.instance().clear();
+  }
+
+  // 9.	Se pueden obtener todas las alertas no expiradas de un usuario que aún no ha leído, ordenadas
+  // primero las Urgentes y luego las informativas de la más reciente a la más antigua.
+
+  @Test
+  public void SePuedenObtenerLasAlertasDeUnUsuario() {
+    Tema politica = new Tema("politica");
+    Alerta alerta = new Alerta("A votar gente", TipoDeAlerta.INFORMATIVA, politica);
+    Alerta alerta2 = new Alerta("A votar mas", TipoDeAlerta.INFORMATIVA, politica);
+    Alerta alerta3 = new Alerta("A votar mas todavia", TipoDeAlerta.URGENTE, politica);
+    alerta.setFecha_creacion(LocalDateTime.of(2022, 2, 21, 12, 30));
+    alerta2.setFecha_creacion(LocalDateTime.of(2020, 2, 21, 12, 30));
+
+    alerta.enviar(usuario);
+    alerta2.enviar(usuario);
+    alerta3.enviar(usuario);
+
+    List<Alerta> alertas = usuario.obtener_alertas();
+
+    //alertas.forEach(a -> System.out.println( a.getTipo() + " - " + a.getDescripcion()));
+
+    assertEquals(alerta3, alertas.get(0));
+    assertEquals(alerta, alertas.get(1));
+    assertEquals(alerta2, alertas.get(2));
+
   }
 
 }

@@ -2,6 +2,7 @@ package domain;
 
 import domain.alertas.Alerta;
 import domain.alertas.AlertaUsuario;
+import domain.alertas.TipoDeAlerta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,9 @@ public class Usuario {
   public boolean tiene_alerta(Alerta alerta) {
     return this.alertas_recibidas
         .stream()
-        .anyMatch(alertaUsuario ->
-            alertaUsuario
-                .getAlerta()
-                .equals(alerta)
-        );
+        .map(alertaUsuario -> alertaUsuario.getAlerta())
+        .collect(Collectors.toList())
+        .contains(alerta);
   }
 
   public void eliminar_alertas_expiradas() {
@@ -64,6 +63,23 @@ public class Usuario {
 
   public boolean leida(Alerta alerta) {
     return find(alerta).leida();
+  }
+
+  public List<Alerta> obtener_alertas() {
+    return this.alertas_recibidas
+        .stream()
+        .filter(alertaUsuario -> !alertaUsuario.expirada() && !alertaUsuario.leida())
+        .map(AlertaUsuario::getAlerta)
+        .sorted((o1, o2) -> {
+          if (o1.tipo_is(TipoDeAlerta.URGENTE) && o2.tipo_is(TipoDeAlerta.INFORMATIVA))
+            return -1;
+          else if (o1.tipo_is(TipoDeAlerta.INFORMATIVA) && o2.tipo_is(TipoDeAlerta.URGENTE))
+            return 1;
+          else if (o1.tipo_is(TipoDeAlerta.INFORMATIVA) && o2.tipo_is(TipoDeAlerta.INFORMATIVA)) {
+            return o1.getFecha_creacion().compareTo(o2.getFecha_creacion()) * -1;
+          } else
+            return 0;
+        }).collect(Collectors.toList());
   }
 
 }
