@@ -14,9 +14,22 @@ Sobre Alertas:
     clase, sería más dinámico en el sentido de no tener que parar todo y no tener que ver el código, pero me
     parece que eso escapa lo que me piden, así que lo hice de la manera más simple posible.
 
+    Hay un tema que es que la relación que planteé entre Alerta y Usuario es de muchos a muchos. Esto quiere
+    decir que un Usuario puede recibir muchas Alertas y una Alerta puede haber sido recibida por muchos
+    usuarios. Esto es un problema para lo de marcar una alerta como leida, dado que idealmente estaría en la
+    'tabla intermedia'. Acá, para resolverlo hice una 'clase intermedia' que digamos wrappea a Alerta y lo usa
+    únicamente Usuario.
+
 Sobre enviar alertas:
 
     Si bien una alerta realísticamente podría ser sobre varios temas, acá siempre menciona que una alerta siempre
     se envía sobre un solo tema, así que no me complico.
     Sobre esto 'Se puede enviar una alerta sobre un tema a un usuario específico, solo lo recibe ese único usuario.'
     supongo que si el usuario no está interesado en el tema recibe la alerta igual.
+
+Sobre la fecha de expiracion de alertas:
+    Lo de 'Las alertas que tienen expiración, no se muestran al usuario si han expirado' me pareció un poco raro.
+    Lo resolví haciendo dos cosas. La primera fue hacer un método que elimine las alertas expiridas de un usuario,
+    porque tenerlas aunque hayan expirado me parece raro. La segunda fue hacer uso de un método que creé que me
+    dice si expiró la alerta, para filtrar después en los últimos puntos cuando pide las distintas formas de obtener
+    alertas.
